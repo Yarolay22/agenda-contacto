@@ -1,3 +1,5 @@
+import { join } from "path";
+
 import express from 'express'
 import cors from 'cors'
 import expressSession from 'express-session'
@@ -17,6 +19,11 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: true
 }))
+
+
+// Template Engine
+app.set('views', join(__dirname, 'template'))
+app.set('view engine', 'pug')
 
 
 // Routes

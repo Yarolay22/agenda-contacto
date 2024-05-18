@@ -1,11 +1,11 @@
 import { Router } from "express";
+import { showPageAgenda } from "../controllers";
+
 
 const routes = Router();
 
-
-
 routes.route('/agenda-contacto')
-    .get((_, res) => res.send('Get a random book'))
+    .get(showPageAgenda)
     .post((_, res) => res.send('Add a book'))
 
 
