@@ -1,7 +1,7 @@
-import { response } from "express";
-import { validationResult, matchedData } from "express-validator";
+import { validationResult } from "express-validator";
+import { ContactModel } from "../models";
 
-export function validateDataRequest(req, res = response, next) {
+export function validateDataRequest(req, res, next) {
     const result = validationResult(req);
 
     if(!result.isEmpty()){
@@ -10,6 +10,12 @@ export function validateDataRequest(req, res = response, next) {
         return res.redirect('/agenda-contacto');
     } 
 
-    req.body = matchedData(req)
     return next()
+}
+
+export async function validateExisteIdMongo(idMongo) {
+    const mondoId = await ContactModel.findById(idMongo)
+    if(!mondoId){
+        throw new Error('ID no existe en la db');
+    }
 }
