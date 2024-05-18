@@ -7,6 +7,7 @@ import flash from "connect-flash";
 
 import Routes from "./routes";
 import { EnvConfig } from "./config";
+import { connection } from "./databases";
 
 const app = express();
 
@@ -39,5 +40,11 @@ app.set('view engine', 'pug')
 app.use('/', Routes)
 
 
-// Server
-app.listen(EnvConfig.PORT, () => console.log('[APP]: Corriendo en el puerto => ', EnvConfig.PORT))
+// Connection MongoDB
+
+
+
+connection()
+    .then(() => app.listen(EnvConfig.PORT, () => console.log('[APP]: Corriendo en el puerto => ', EnvConfig.PORT)))
+    .catch(() => console.warn('No se puedo realizar la conexion exitosamente a mongo!'))
+

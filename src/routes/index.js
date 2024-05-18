@@ -11,7 +11,7 @@ const routes = Router();
 routes.route('/agenda-contacto')
     .get(showPageAgenda)
     .all([
-        body('nombre', 'El nombre es requerido').trim().not().isEmpty().isAlphanumeric(),
+        body('nombre', 'El nombre es requerido').trim().not().isEmpty().isString(),
         body('telefono', 'El telefono debe contener 10 caracteres numericos').trim().not().isEmpty().isNumeric(),
         body('descripcion').trim().optional().isAlphanumeric(),
         validateDataRequest
