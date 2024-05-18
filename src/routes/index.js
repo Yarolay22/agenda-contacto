@@ -1,12 +1,22 @@
 import { Router } from "express";
-import { showPageAgenda } from "../controllers";
+import { body } from "express-validator";
+
+
+import { addContactAgenda, showPageAgenda } from "../controllers";
+import { validateDataRequest } from "../middlewares";
 
 
 const routes = Router();
 
 routes.route('/agenda-contacto')
     .get(showPageAgenda)
-    .post((_, res) => res.send('Add a book'))
+    .all([
+        body('nombre', 'El nombre es requerido').trim().not().isEmpty().isAlphanumeric(),
+        body('telefono', 'El telefono debe contener 10 caracteres numericos').trim().not().isEmpty().isNumeric(),
+        body('descripcion').trim().optional().isAlphanumeric(),
+        validateDataRequest
+    ])
+    .post(addContactAgenda)
 
 
 routes.route('/agenda-contacto/:id')

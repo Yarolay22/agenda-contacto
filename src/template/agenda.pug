@@ -2,4 +2,27 @@ extends layout/base.pug
 
 
 block contenido
-    h1 Contenido Agenda
+    .container-fluid
+        .row
+            .col-3
+                .mt-4.p-3
+                    h3 Formulario de Registro Contacto
+
+                    each error in errors
+                        .alert.alert-danger(role='alert')= error
+                    
+                    form(action="/agenda-contacto" method="POST" autocomplete="off")
+                        .mb-2
+                            label(for="nombre").form-label Nombre:
+                            input(type="text" name="nombre" placeholder="Coloca tu nombre." minlength="3" required).form-control#nombre
+                        .mb-2
+                            label(for="telefono").form-label Telefono:
+                            input(type="tel" name="telefono" placeholder="Coloca tu numero telefono." minlength="10" maxlength="10" required).form-control#name
+                        .mb-2
+                            label(for="descripcion").form-label Descripcion:
+                            textarea#descripcion(name="descripcion" cols="5" rows="2").form-control
+                        .mb-2
+                            input(type="submit", value="Crear Contacto").btn.btn-primary
+
+            .col
+                h1 Mostrar los contactos
