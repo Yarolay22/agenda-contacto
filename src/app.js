@@ -1,7 +1,27 @@
 import express from 'express'
+import cors from 'cors'
+import expressSession from 'express-session'
 
+import Routes from "./routes";
 
 const app = express();
 
 
-app.listen(3000)
+//Middleware
+app.use(express.json())
+
+app.use(cors({origin: '*'}))
+
+app.use(expressSession({
+    secret: 'claveprotejida',
+    resave: false,
+    saveUninitialized: true
+}))
+
+
+// Routes
+app.use('/', Routes)
+
+
+// Server
+app.listen(3000, () => console.log('[APP]: Corriendo en el puerto => ', 3000))
