@@ -2,45 +2,47 @@ import { Router } from "express";
 import { body, param } from "express-validator";
 
 
-import { addContactAgenda, deleteContact, showPageAgenda, showPageAgendaDetail, updateContact } from "../controllers";
+import { addNewContact, deleteContact, getAllContactos, getDetailContact, updateContact } from "../controllers";
 import { validateDataRequest, validateExisteIdMongo } from "../middlewares";
-
 
 
 const routes = Router();
 
-const validateInputs = [
+// MOSTRAR LA PAGINA
+routes.get('/agenda-contacto', getAllContactos)
+
+
+// MIDDLEWARE VALIDATOR PARA ID MONGO
+routes.use('/agenda-contacto/:idMongo', [
+    param('idMongo', 'Id no valido intenta nuevamente').isMongoId(),
+    param('idMongo').custom(validateExisteIdMongo),
+    validateDataRequest
+])
+
+
+// DETALLE DEL CONTACTO
+routes.get('/agenda-contacto/:idMongo', getDetailContact)
+
+
+// ELIMINAR CONTACTO
+routes.delete('/agenda-contacto/:idMongo', deleteContact)
+
+
+
+// MIDDLEWARE VALIDATOR PARA BODY
+routes.use('/agenda-contacto', [
     body('nombre', 'El nombre es requerido').trim().not().isEmpty().isString(),
     body('telefono', 'El telefono debe contener 10 caracteres numericos').trim().not().isEmpty().isNumeric(),
     body('descripcion').trim().optional().isString(),
     validateDataRequest
-]
+])
 
-routes.route('/agenda-contacto')
-    .get(showPageAgenda)
-    .all(validateInputs)
-    .post(addContactAgenda)
+// GUARDAR NUEVO CONTACTO
+routes.post('/agenda-contacto', addNewContact)
 
 
-routes.route('/agenda-contacto/edit/:idMongo')
-    .all([
-        param('idMongo', 'Id no valido intenta nuevamente').isMongoId(),
-        param('idMongo').custom(validateExisteIdMongo),
-        validateDataRequest
-    ])
-    .get(showPageAgendaDetail)
-    .all(validateInputs)
-    .post(updateContact)
+// ACTUALIZAR EL CONTACTO
+routes.put('/agenda-contacto/:idMongo', updateContact)
 
-
-routes.route('/agenda-contacto/delete/:idMongo')
-    .all([
-        param('idMongo', 'Id no valido intenta nuevamente').isMongoId(),
-        param('idMongo').custom(validateExisteIdMongo),
-        validateDataRequest
-    ])
-    .get(deleteContact);
-
-routes.use('*', (_, res) => res.redirect('/agenda-contacto'))
 
 export default routes;
