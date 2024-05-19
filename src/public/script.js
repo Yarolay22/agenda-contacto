@@ -72,7 +72,7 @@
         const contacto = await sendResponse(url+'/'+idContacto)
 
         const payload = contacto.data.payload;
-        const checks = confirm(`¿Dese eliminar el contacot de ${payload.nombre}?`)
+        const checks = confirm(`¿Dese eliminar el contacto de ${payload.nombre}?`)
         if(!checks) return;
 
         const response = await sendResponse(url+'/'+payload._id, 'DELETE')
