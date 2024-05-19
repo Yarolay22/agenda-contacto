@@ -1,51 +1,37 @@
-import { response } from "express";
+
 import { ContactModel } from "../models";
 import { matchedData } from "express-validator";
 
-export async function showPageAgenda(req, res = response){
-   return await renderPageAgenda(res, req, {nombre: '', telefono: '', descripcion: ''})
+export async function getAllContactos(_, res){
+   const contactos = await ContactModel.find().sort({'createdAt': 'desc'})
+   return res.status(200).json({ok: true, data: contactos})
 }
 
-export async function addContactAgenda(req, res = response) {
+export async function addNewContact(req, res) {
     const body = matchedData(req)
 
-    await ContactModel.create(body)
+    const contacto = await ContactModel.create(body)
 
-    req.flash('success', 'Contacto registrado exitosamente!')
-    return res.redirect('/agenda-contacto')
+    return res.status(201).json({ok: true, data:{ payload: contacto }})
 }
 
 
-export async function showPageAgendaDetail(req, res = response) {
-    const dataContacto = await ContactModel.findById(req.params.idMongo)
-    return await renderPageAgenda(res, req, dataContacto)
+export async function getDetailContact(req, res) {
+    const contacto = await ContactModel.findById(req.params.idMongo)
+    return res.status(200).json({ok: true, data:{payload: contacto}})
 }
 
 
-export async function updateContact(req, res = response) {
+export async function updateContact(req, res) {
     
-    await ContactModel.findByIdAndUpdate(req.params.idMongo, req.body)
+    const contacto = await ContactModel.findByIdAndUpdate(req.params.idMongo, req.body)
 
-    req.flash('success', 'Contacto actualizado exitosamente!')
-    return res.redirect('/agenda-contacto')
-
+    return res.status(200).json({ok: true, data:{payload: contacto}})
 }
 
 export async function deleteContact(req, res) {
     await ContactModel.findByIdAndDelete(req.params.idMongo)
-    req.flash('success', 'Contacto eliminado exitosamente!')
-    return res.redirect('/agenda-contacto')
+    return res.status(200).json({ok: true})
 }
-
-async function renderPageAgenda(res, req, dataContacto) {
-    const contactos = await ContactModel.find().sort({'createdAt': 'desc'})
-    return res.render('agenda', {
-        errors: req.flash('errors'), 
-        success: req.flash('success'), 
-        contactos, 
-        dataContacto,
-    })
-}
-
 
 

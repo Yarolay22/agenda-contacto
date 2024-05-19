@@ -5,9 +5,7 @@ export function validateDataRequest(req, res, next) {
     const result = validationResult(req);
 
     if(!result.isEmpty()){
-        console.log(result.array())
-        req.flash('errors', result.array().map(error => error.msg))
-        return res.redirect('/agenda-contacto');
+        return res.status(400).json({ok: false, errors: result.array().map(error => error.msg)});
     } 
 
     return next()

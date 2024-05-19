@@ -2,8 +2,7 @@ import { join } from "path";
 
 import express from 'express'
 import cors from 'cors'
-import expressSession from 'express-session'
-import flash from "connect-flash";
+
 
 import Routes from "./routes";
 import { EnvConfig } from "./config";
@@ -20,23 +19,8 @@ app.use(express.urlencoded({extended: false}))
 
 app.use(cors({origin: '*'}))
 
-app.use(expressSession({
-    secret: EnvConfig.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 5000 }
-}))
-
-
-app.use(flash())
-
-
-// Template Engine
-app.set('views', join(__dirname, 'template'))
-app.set('view engine', 'pug')
-
 // Static Files
-app.use('/agenda-contacto', express.static(join(__dirname, './public')))
+app.use(express.static(join(__dirname, './public')))
 
 
 // Routes
