@@ -14,7 +14,7 @@ block contenido
                 .mt-4.p-3
                     h3 Formulario de Registro Contacto
         
-                    form(action=`/agenda-contacto/${'edit/'+dataContacto._id || ''}` method="POST" autocomplete="off")
+                    form(id="formulario" autocomplete="off")
                         .mb-2
                             label(for="nombre").form-label Nombre:
                             input(type="text" name="nombre" placeholder="Coloca tu nombre." minlength="3" required value=`${dataContacto.nombre}`).form-control#nombre
@@ -25,12 +25,10 @@ block contenido
                             label(for="descripcion").form-label Descripcion:
                             textarea#descripcion(name="descripcion" cols="5" rows="2").form-control= `${dataContacto.descripcion}`
                         .mb-2
-                            input(type="submit", value="Crear Contacto").btn.btn-primary
+                            input(type="submit", value=`${dataContacto._id ? "Editar Contacto" : "Crear Contacto"}`).btn.btn-primary
 
             .col-9.pt-3
                 h1 Mostrar los contactos
-
-                pre= JSON.stringify(contactos)
 
                 .row.gap-1
                     each contacto in contactos
@@ -41,5 +39,5 @@ block contenido
                                     h5.card-title=contacto.telefono
                                     p.card-text= contacto.descripcion
                                     .d-flex.gap-2
-                                        a.btn.btn-primary(href=`/agenda-contacto/edit/${contacto._id}`) Editar
-                                        a.btn.btn-primary(href=`/agenda-contacto/delete/${contacto._id}`) Eliminar
+                                        a.btn.btn-primary( onclick="") Editar
+                                        a.btn.btn-primary(onclick="confirmateDelete('/agenda-contacto')" data-id=`${contacto._id}`) Eliminar

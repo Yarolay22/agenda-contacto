@@ -35,15 +35,15 @@ app.use(flash())
 app.set('views', join(__dirname, 'template'))
 app.set('view engine', 'pug')
 
+// Static Files
+app.use('/agenda-contacto', express.static(join(__dirname, './public')))
+
 
 // Routes
 app.use('/', Routes)
 
 
 // Connection MongoDB
-
-
-
 connection()
     .then(() => app.listen(EnvConfig.PORT, () => console.log('[APP]: Corriendo en el puerto => ', EnvConfig.PORT)))
     .catch(() => console.warn('No se puedo realizar la conexion exitosamente a mongo!'))

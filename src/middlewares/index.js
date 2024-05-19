@@ -14,6 +14,7 @@ export function validateDataRequest(req, res, next) {
 }
 
 export async function validateExisteIdMongo(idMongo) {
+    console.log({idMongo})
     const mondoId = await ContactModel.findById(idMongo)
     if(!mondoId){
         throw new Error('ID no existe en la db');
