@@ -24,7 +24,9 @@ export async function getDetailContact(req, res) {
 
 export async function updateContact(req, res) {
     
-    const contacto = await ContactModel.findByIdAndUpdate(req.params.idMongo, req.body)
+    await ContactModel.findByIdAndUpdate(req.params.idMongo, req.body)
+
+    const contacto = await ContactModel.findById(req.params.idMongo)
 
     return res.status(200).json({ok: true, data:{payload: contacto}})
 }

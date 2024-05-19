@@ -6,11 +6,11 @@ import { addNewContact, deleteContact, getAllContactos, getDetailContact, update
 import { validateDataRequest, validateExisteIdMongo } from "../middlewares";
 
 
-
 const routes = Router();
 
 // MOSTRAR LA PAGINA
 routes.get('/agenda-contacto', getAllContactos)
+
 
 // MIDDLEWARE VALIDATOR PARA ID MONGO
 routes.use('/agenda-contacto/:idMongo', [
@@ -19,12 +19,14 @@ routes.use('/agenda-contacto/:idMongo', [
     validateDataRequest
 ])
 
-// ELIMINAR CONTACTO
-routes.delete('/agenda-contacto/:idMongo', deleteContact)
-
 
 // DETALLE DEL CONTACTO
 routes.get('/agenda-contacto/:idMongo', getDetailContact)
+
+
+// ELIMINAR CONTACTO
+routes.delete('/agenda-contacto/:idMongo', deleteContact)
+
 
 
 // MIDDLEWARE VALIDATOR PARA BODY
@@ -35,13 +37,12 @@ routes.use('/agenda-contacto', [
     validateDataRequest
 ])
 
-
 // GUARDAR NUEVO CONTACTO
 routes.post('/agenda-contacto', addNewContact)
 
+
 // ACTUALIZAR EL CONTACTO
 routes.put('/agenda-contacto/:idMongo', updateContact)
-
 
 
 export default routes;
